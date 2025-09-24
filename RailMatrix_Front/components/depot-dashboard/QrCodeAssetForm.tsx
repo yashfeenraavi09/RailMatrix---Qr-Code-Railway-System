@@ -1822,22 +1822,25 @@ export default function QrCodeAssetForm() {
                     </Button>
                     <Button
                       variant="secondary"
+                      className="bg-orange-400 text-white"
                       onClick={handlePrintAssetLabel}
-                      disabled={!qrCodeSvg}
+                      // disabled={!qrCodeSvg}
                     >
                       Print Asset Label
                     </Button>
                     <Button
                       variant="secondary"
                       onClick={handleExportQr}
-                      disabled={!qrCodeSvg}
+                      className="bg-green-600 text-white"
+                      // disabled={!qrCodeSvg}
                     >
                       Export QR Label
                     </Button>
                     <Button
                       variant="secondary"
+                      className="bg-purple-600 text-white"
                       onClick={handleCreatePdfLabel}
-                      disabled={!qrCodeSvg}
+                      // disabled={!qrCodeSvg}
                     >
                       Create PDF Label
                     </Button>
@@ -1865,27 +1868,43 @@ export default function QrCodeAssetForm() {
                     id="csvUpload"
                   />
                   <label htmlFor="csvUpload">
-                    <Button asChild variant="secondary">
+                    <Button
+                      asChild
+                      variant="secondary"
+                      className="bg-indigo-600 text-white"
+                    >
                       <span>Select CSV...</span>
                     </Button>
                   </label>
 
                   <Input
-                    placeholder="Batch name"
-                    className="w-1/3"
+                    placeholder="Batch Name"
+                    className="w-1/3 border border-gray-500 rounded-md"
                     value={batchName}
                     onChange={(e) => setBatchName(e.target.value)}
                   />
 
-                  <Button variant="secondary" onClick={handleMapColumns}>
+                  <Button
+                    variant="secondary"
+                    onClick={handleMapColumns}
+                    className="bg-yellow-400 text-white"
+                  >
                     Map Columns
                   </Button>
 
-                  <Button variant="secondary" onClick={handleValidate}>
+                  <Button
+                    variant="secondary"
+                    onClick={handleValidate}
+                    className="bg-green-600 text-white"
+                  >
                     Validate
                   </Button>
 
-                  <Button disabled={!csvPreview} onClick={handleStartImport}>
+                  <Button
+                    // disabled={!csvPreview}
+                    onClick={handleStartImport}
+                    className="bg-blue-600 text-white"
+                  >
                     Start Import
                   </Button>
                 </div>
