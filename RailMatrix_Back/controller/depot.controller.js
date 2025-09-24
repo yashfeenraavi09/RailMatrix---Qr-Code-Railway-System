@@ -3,7 +3,6 @@ import Dispatch from '../model/dispatch.model.js'
 import Warranty from '../model/warranty.model.js'
 import Part from '../model/from.model.js';
 
-
 // export const getInventory = async (req, res) => {
 //   try {
 //     const items = await Inventory.find();

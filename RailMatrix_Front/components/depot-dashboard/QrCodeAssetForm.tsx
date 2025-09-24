@@ -1815,30 +1815,28 @@ export default function QrCodeAssetForm() {
 
                   <div className="flex gap-2 flex-wrap">
                     <Button
+                      className="bg-blue-600 text-white hover:bg-blue-800 focus:bg-blue-600 active:bg-blue-600"
                       onClick={handleSubmit}
-                      className="bg-blue-600 text-white"
                     >
                       Submit
                     </Button>
                     <Button
-                      variant="secondary"
-                      className="bg-orange-400 text-white"
+                      className="bg-orange-400 text-white hover:bg-orange-600 focus:bg-orange-400 active:bg-orange-400"
                       onClick={handlePrintAssetLabel}
                       // disabled={!qrCodeSvg}
                     >
                       Print Asset Label
                     </Button>
                     <Button
-                      variant="secondary"
                       onClick={handleExportQr}
-                      className="bg-green-600 text-white"
+                      className="bg-green-600 text-white hover:bg-green-800 focus:bg-green-600 active:bg-green-600"
                       // disabled={!qrCodeSvg}
                     >
                       Export QR Label
                     </Button>
                     <Button
                       variant="secondary"
-                      className="bg-purple-600 text-white"
+                      className="bg-purple-600 text-white hover:bg-purple-800 focus:bg-purple-600 active:bg-purple-600"
                       onClick={handleCreatePdfLabel}
                       // disabled={!qrCodeSvg}
                     >
@@ -1847,7 +1845,7 @@ export default function QrCodeAssetForm() {
 
                     <Button
                       onClick={handleClearAll}
-                      className="bg-red-600 text-white"
+                      className="bg-red-600 text-white hover:bg-red-700 focus:bg-red-600 active:bg-red-600"
                     >
                       Clear All Fields
                     </Button>
@@ -1870,8 +1868,7 @@ export default function QrCodeAssetForm() {
                   <label htmlFor="csvUpload">
                     <Button
                       asChild
-                      variant="secondary"
-                      className="bg-indigo-600 text-white"
+                      className="bg-indigo-600 text-white hover:bg-indigo-800 focus:bg-indigo-600 active:bg-indigo-600"
                     >
                       <span>Select CSV...</span>
                     </Button>
@@ -1885,25 +1882,22 @@ export default function QrCodeAssetForm() {
                   />
 
                   <Button
-                    variant="secondary"
                     onClick={handleMapColumns}
-                    className="bg-yellow-400 text-white"
+                    className="bg-yellow-400 text-white hover:bg-yellow-600 focus:bg-yellow-400 active:bg-yellow-400"
                   >
                     Map Columns
                   </Button>
 
                   <Button
-                    variant="secondary"
                     onClick={handleValidate}
-                    className="bg-green-600 text-white"
+                    className="bg-green-600 text-white hover:bg-green-800 focus:bg-green-600 active:bg-green-600"
                   >
                     Validate
                   </Button>
 
                   <Button
-                    // disabled={!csvPreview}
                     onClick={handleStartImport}
-                    className="bg-blue-600 text-white"
+                    className="bg-blue-600 text-white hover:bg-blue-800 focus:bg-blue-600 active:bg-blue-600"
                   >
                     Start Import
                   </Button>
