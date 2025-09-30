@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, Truck, CheckCircle } from "lucide-react";
+import { LogOut, Truck } from "lucide-react";
 import { useLanguage } from "@/components/language-context";
 import QrCodeAssetForm from "@/components/depot-dashboard/QrCodeAssetForm";
 
@@ -33,15 +33,11 @@ export function DepotDashboard({
 
   // Dispatch
   const [dispatchOrders, setDispatchOrders] = useState<any[]>([]);
-  const [isUpdatingDispatch, setIsUpdatingDispatch] = useState<string | null>(
-    null
-  );
+  const [isUpdatingDispatch, setIsUpdatingDispatch] = useState<string | null>(null);
 
-  // Warranty
+  // Warranty (static sample data)
   const [warrantyClaims, setWarrantyClaims] = useState<any[]>([]);
-  const [isProcessingWarranty, setIsProcessingWarranty] = useState<
-    string | null
-  >(null);
+  const [isProcessingWarranty, setIsProcessingWarranty] = useState<string | null>(null);
 
   // --- Fetch Inventory ---
   useEffect(() => {
@@ -55,7 +51,6 @@ export function DepotDashboard({
         if (!res.ok)
           throw new Error(`Failed to fetch inventory: ${res.status}`);
         const data = await res.json();
-        console.log(data);
         setInventory(data);
       } catch (err: any) {
         setInventoryError(err.message);
@@ -81,20 +76,35 @@ export function DepotDashboard({
     fetchDispatch();
   }, [accessToken]);
 
-  // --- Fetch Warranty Claims ---
+  // --- Static Warranty Claims ---
   useEffect(() => {
-    const fetchWarranty = async () => {
-      try {
-        const res = await fetch(`${API_URL}/depot/warranty`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        setWarrantyClaims(data);
-      } catch {}
-    };
-    fetchWarranty();
-  }, [accessToken]);
+    setWarrantyClaims([
+      {
+        id: "C1",
+        component: "Brake Shoe",
+        defect_description: "Excessive wear after 2 weeks",
+        reported_by: "EMP123",
+        vendor_name: "Vendor A",
+        status: "Under Review",
+      },
+      {
+        id: "C2",
+        component: "Coupler",
+        defect_description: "Locking pin not engaging",
+        reported_by: "EMP456",
+        vendor_name: "Vendor B",
+        status: "Approved",
+      },
+      {
+        id: "C3",
+        component: "Air Hose",
+        defect_description: "Crack causing air leak",
+        reported_by: "EMP789",
+        vendor_name: "Vendor C",
+        status: "Rejected",
+      },
+    ]);
+  }, []);
 
   // --- Dispatch Update ---
   const handleDispatchUpdate = async (dispatchId: string, status: string) => {
@@ -118,23 +128,24 @@ export function DepotDashboard({
     }
   };
 
-  // --- Warranty Claim ---
-  const handleWarrantyClaim = async (claimId: string) => {
+  // --- Warranty Decision (local state update) ---
+  const handleWarrantyDecision = async (
+    claimId: string,
+    decision: "Approved" | "Rejected"
+  ) => {
     setIsProcessingWarranty(claimId);
     try {
-      const res = await fetch(`${API_URL}/depot/warranty_claim`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ claimId, reportedBy: userData.employee_id }),
-      });
-      const data = await res.json();
-      if (data.success) alert(`Warranty claim processed: ${data.claim.id}`);
-      else alert("Failed to process warranty claim");
+      // Simulate async delay
+      await new Promise((resolve) => setTimeout(resolve, 600));
+
+      // Update local state
+      setWarrantyClaims((prev) =>
+        prev.map((c) => (c.id === claimId ? { ...c, status: decision } : c))
+      );
+
+      alert(`Claim ${decision}. Vendor notified if approved.`);
     } catch {
-      alert("Network error");
+      alert("Something went wrong");
     } finally {
       setIsProcessingWarranty(null);
     }
@@ -169,9 +180,8 @@ export function DepotDashboard({
           className="space-y-4"
         >
           <TabsList>
-            <TabsTrigger value="inventory">Inventory</TabsTrigger>
+            <TabsTrigger value="inventory">Inventory Tracking</TabsTrigger>
             <TabsTrigger value="qr-generation">QR Generation</TabsTrigger>
-            <TabsTrigger value="dispatch">Dispatch</TabsTrigger>
             <TabsTrigger value="warranty">Warranty Claims</TabsTrigger>
           </TabsList>
 
@@ -216,7 +226,7 @@ export function DepotDashboard({
             )}
           </TabsContent>
 
-          {/* QR Generation Tab - Asset Form */}
+          {/* QR Generation Tab */}
           <TabsContent value="qr-generation">
             <QrCodeAssetForm />
           </TabsContent>
@@ -251,25 +261,62 @@ export function DepotDashboard({
 
           {/* Warranty Tab */}
           <TabsContent value="warranty">
-            {warrantyClaims.map((claim) => (
-              <Card key={claim.id} className="mb-2">
-                <CardContent className="flex justify-between items-center">
-                  <div>
-                    <p>{claim.component}</p>
-                    <Badge>{claim.status}</Badge>
-                  </div>
-                  {claim.status === "Under Review" && (
-                    <Button
-                      onClick={() => handleWarrantyClaim(claim.id)}
-                      disabled={isProcessingWarranty === claim.id}
-                    >
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                      Process
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+            {warrantyClaims.length === 0 ? (
+              <p className="text-muted-foreground">
+                No warranty claims reported.
+              </p>
+            ) : (
+              warrantyClaims.map((claim) => (
+                <Card key={claim.id} className="mb-3">
+                  <CardHeader>
+                    <CardTitle>{claim.component}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="font-medium">Defect</p>
+                        <p>{claim.defect_description || "N/A"}</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Reported By</p>
+                        <p>{claim.reported_by || "Unknown"}</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Vendor</p>
+                        <p>{claim.vendor_name || "N/A"}</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Status</p>
+                        <Badge>{claim.status}</Badge>
+                      </div>
+                    </div>
+
+                    {claim.status === "Under Review" && (
+                      <div className="flex gap-2">
+                        <Button
+                          variant="default"
+                          onClick={() =>
+                            handleWarrantyDecision(claim.id, "Approved")
+                          }
+                          disabled={isProcessingWarranty === claim.id}
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          onClick={() =>
+                            handleWarrantyDecision(claim.id, "Rejected")
+                          }
+                          disabled={isProcessingWarranty === claim.id}
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </TabsContent>
         </Tabs>
       </div>
