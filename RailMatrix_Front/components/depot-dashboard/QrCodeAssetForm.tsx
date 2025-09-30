@@ -1172,7 +1172,7 @@ export default function QrCodeAssetForm() {
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(payload),
       // });
-      const res = await fetch("http://localhost:5000/api/assets/register", {
+      const res = await fetch("https://railmatrixx.onrender.com/api/assets/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1482,7 +1482,7 @@ export default function QrCodeAssetForm() {
     //   headers: { "Content-Type": "application/json" },
     //   body: JSON.stringify({ batchName, items: mappedItems }),
     // });
-    const res = await fetch("http://localhost:5000/api/assets/bulk-import", {
+    const res = await fetch("https://railmatrixx.onrender.com/api/assets/bulk-import", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ batchName, items: mappedItems }),
@@ -1497,7 +1497,7 @@ export default function QrCodeAssetForm() {
     //   body: JSON.stringify({ batchName, items: mappedItems }),
     // });
     const downloadRes = await fetch(
-      "http://localhost:5000/api/assets/bulk-download",
+      "https://railmatrixx.onrender.com/api/assets/bulk-download",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
