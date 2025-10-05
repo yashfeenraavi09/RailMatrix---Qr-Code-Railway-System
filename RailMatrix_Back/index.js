@@ -15,8 +15,8 @@ dbConnect();
 
 app.use(express.json());
 
-// --- CORS Configuration ---
-
+// --- CORS Configuration Update ---
+// MUST allow all domains that host the frontend.
 const allowedOrigins = [
     // 1. Your previous allowed domain
     "https://rail-matrix.vercel.app",
