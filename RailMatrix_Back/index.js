@@ -7,30 +7,48 @@ import assetsRoute from './routes/assets.js'
 import cors from 'cors'
 import dotenv from 'dotenv';
 dotenv.config();
+
 const app = express();
 
 // Connect to MongoDB
 dbConnect();
 
-
 app.use(express.json());
+
+// --- CORS Configuration ---
+
+const allowedOrigins = [
+    // 1. Your previous allowed domain
+    "https://rail-matrix.vercel.app",
+    
+    // 2. Your NEWLY DEPLOYED domain causing the current error
+    "https://udm-portal-chi.vercel.app", 
+    
+    // 3. (Optional, but recommended for future local testing)
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+];
+
 app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
+    origin: allowedOrigins,
+    credentials: true,
 }));
+// --- End CORS Configuration Update ---
+
 
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/depot', depotRoutes);
 app.use('/api/assets', assetsRoute)
+
 // Root endpoint
 app.get('/', (req, res) => {
-  res.send('Server is running');
+    res.send('Server is running');
 });
 
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
