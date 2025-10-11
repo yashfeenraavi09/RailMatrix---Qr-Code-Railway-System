@@ -40,7 +40,6 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
       try {
         const data = await login(credentials.employeeId, credentials.password, credentials.role)
-
         onLogin(credentials.role, data)
 
         if (data.redirect_url) {
@@ -95,6 +94,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
               </CardTitle>
               <CardDescription>Enter your railway credentials to access the system</CardDescription>
             </CardHeader>
+
             <CardContent className="space-y-4">
               {error && (
                 <Alert variant="destructive">
@@ -164,6 +164,13 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   t("login.loginButton")
                 )}
               </Button>
+
+              {/* Example Credentials Section */}
+              <div className="mt-6 text-sm text-center text-muted-foreground bg-muted/30 p-3 rounded-lg">
+                <p className="font-semibold mb-1 text-foreground">Login Credentials:</p>
+                <p><strong>Depot Staff</strong> - Username: <code>depot001</code> | Password: <code>password123</code></p>
+                <p><strong>Senior Official</strong> -  Username: <code>senior001</code> | Password: <code>password123</code></p>
+              </div>
             </CardContent>
           </Card>
         </div>
